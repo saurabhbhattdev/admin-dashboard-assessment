@@ -24,6 +24,7 @@ import {
   Server,
   Layers3,
   BriefcaseBusiness,
+  LayoutDashboard,
 } from "lucide-react";
 
 import {
@@ -39,390 +40,200 @@ const PIE_COLORS = ["#22d3ee", "#8b5cf6", "#10b981", "#f43f5e"];
 
 const tooltipStyles = {
   contentStyle: {
-    backgroundColor: "#0F172A",
+    backgroundColor: "#080E1A",
     border: "1px solid rgba(255,255,255,0.08)",
     borderRadius: "16px",
     color: "#ffffff",
     boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+    fontSize: "12px",
+    fontWeight: "600",
   },
-  wrapperStyle: {
-    outline: "none",
-  },
-  cursor: {
-    fill: "rgba(255,255,255,0.03)",
-  },
+  wrapperStyle: { outline: "none" },
+  cursor: { fill: "rgba(255,255,255,0.03)" },
 };
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 600);
-
+    const timer = setTimeout(() => setIsLoading(false), 900);
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
-    return <Spinner text="Loading dashboard intelligence..." />;
-  }
+  if (isLoading) return <Spinner text="Building your dashboard..." />;
 
   return (
-    <div className="space-y-8">
-      {/* KPI Cards */}
+    <div className="mx-auto max-w-7xl space-y-8">
+      {/* ── Page Header ── */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="mb-3 flex items-center gap-2.5">
+            <div
+              className="flex h-9 w-9 items-center justify-center rounded-xl"
+              style={{ background: "rgba(6,182,212,0.10)", boxShadow: "0 0 0 1px rgba(6,182,212,0.20)" }}
+            >
+              <LayoutDashboard size={16} className="text-cyan-400" />
+            </div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
+              Platform Overview
+            </span>
+          </div>
+
+          <h1 className="wiz-heading leading-none text-white" style={{ fontSize: "clamp(2.4rem, 5vw, 3.5rem)" }}>
+            Command <span style={{ color: "rgb(100 116 139)" }}>Center</span>
+          </h1>
+
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-500">
+            Real-time analytics and strategic insights across your entire ecosystem.
+          </p>
+        </div>
+      </div>
+
+      {/* ── KPI Cards ── */}
       <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <KPICard
           title="Total Users"
           value={kpiData.totalUsers}
-          icon={<Users />}
-          color="text-cyan-400"
+          icon={<Users size={22} />}
+          accent="cyan"
         />
-
         <KPICard
           title="Revenue"
           value={`$${kpiData.revenue}`}
-          icon={<DollarSign />}
-          color="text-purple-400"
+          icon={<DollarSign size={22} />}
+          accent="purple"
         />
-
         <KPICard
           title="Active Projects"
           value={kpiData.activeProjects}
-          icon={<FolderKanban />}
-          color="text-emerald-400"
+          icon={<FolderKanban size={22} />}
+          accent="emerald"
         />
       </section>
 
-      {/* Growth + Executive Summary */}
+      {/* ── Growth + Executive Summary ── */}
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <div className="rounded-3xl border border-white/5 bg-[#0F172A] p-6 lg:col-span-2 shadow-2xl">
+        <div className="wiz-glass rounded-3xl p-6 lg:col-span-2 shadow-2xl">
           <div className="mb-8 flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white">
-                Growth Over Time
-              </h3>
-
-              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-500">
+              <h3 className="wiz-heading text-xl text-white">Growth Over Time</h3>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-cyan-500">
                 User growth analytics
               </p>
             </div>
-
-            <Activity className="text-cyan-500" />
+            <Activity className="text-cyan-500 opacity-50" />
           </div>
 
-          <div className="h-[260px]">
+          <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
-                data={chartData}
-                margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-              >
+              <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
-                  <linearGradient
-                    id="growthGradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop
-                      offset="5%"
-                      stopColor="#22d3ee"
-                      stopOpacity={0.35}
-                    />
-                    <stop
-                      offset="95%"
-                      stopColor="#22d3ee"
-                      stopOpacity={0}
-                    />
+                  <linearGradient id="growthGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#22d3ee" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#22d3ee" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  vertical={false}
-                  stroke="rgba(255,255,255,0.05)"
-                />
-
-                <XAxis
-                  dataKey="name"
-                  stroke="#94a3b8"
-                  tick={{ fontSize: 12 }}
-                />
-
-                <YAxis
-                  stroke="#94a3b8"
-                  tick={{ fontSize: 12 }}
-                />
-
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                <XAxis dataKey="name" stroke="#475569" tick={{ fontSize: 11, fontWeight: 600 }} axisLine={false} tickLine={false} />
+                <YAxis stroke="#475569" tick={{ fontSize: 11, fontWeight: 600 }} axisLine={false} tickLine={false} />
                 <Tooltip {...tooltipStyles} />
-
-                <Area
-                  type="monotone"
-                  dataKey="users"
-                  stroke="#22d3ee"
-                  strokeWidth={2}
-                  fill="url(#growthGradient)"
-                  activeDot={{
-                    r: 4,
-                    fill: "#22d3ee",
-                    stroke: "#0F172A",
-                    strokeWidth: 2,
-                  }}
-                />
+                <Area type="monotone" dataKey="users" stroke="#22d3ee" strokeWidth={3} fill="url(#growthGradient)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="rounded-3xl border border-white/5 bg-[#0F172A] p-6 shadow-2xl">
-          <h3 className="mb-8 text-lg font-bold text-white">
-            Executive Summary
-          </h3>
-
-          <div className="space-y-4">
-            <SummaryItem
-              icon={<TrendingUp size={18} />}
-              label="Monthly Growth"
-              value="+24.8%"
-              color="text-cyan-400"
-            />
-
-            <SummaryItem
-              icon={<ShieldCheck size={18} />}
-              label="System Health"
-              value="98.2%"
-              color="text-emerald-400"
-            />
-
-            <SummaryItem
-              icon={<Server size={18} />}
-              label="Server Load"
-              value="72%"
-              color="text-purple-400"
-            />
-
-            <SummaryItem
-              icon={<Users size={18} />}
-              label="New Users"
-              value="184"
-              color="text-amber-400"
-            />
+        <div className="wiz-glass rounded-3xl p-6 shadow-2xl">
+          <h3 className="wiz-heading mb-8 text-xl text-white">Executive Summary</h3>
+          <div className="space-y-3">
+            <SummaryItem icon={<TrendingUp size={18} />} label="Monthly Growth" value="+24.8%" color="text-cyan-400" />
+            <SummaryItem icon={<ShieldCheck size={18} />} label="System Health" value="98.2%" color="text-emerald-400" />
+            <SummaryItem icon={<Server size={18} />} label="Server Load" value="72%" color="text-purple-400" />
+            <SummaryItem icon={<Users size={18} />} label="New Users" value="184" color="text-amber-400" />
           </div>
         </div>
       </section>
 
-      {/* Bottom Enterprise Section */}
+      {/* ── Bottom Section ── */}
       <section className="grid grid-cols-1 gap-8 xl:grid-cols-12">
-        {/* FIXED PROJECT DISTRIBUTION */}
-        <div className="xl:col-span-7 rounded-3xl border border-white/5 bg-[#0F172A] p-6 shadow-2xl">
+        <div className="xl:col-span-7 wiz-glass rounded-3xl p-6 shadow-2xl">
           <div className="mb-8 flex items-start justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white">
-                Project Distribution
-              </h3>
-
-              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-400">
-                Department performance
-              </p>
+              <h3 className="wiz-heading text-xl text-white">Project Distribution</h3>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-purple-400">Department performance</p>
             </div>
-
-            <div className="rounded-2xl bg-purple-500/10 p-3">
-              <BriefcaseBusiness
-                size={20}
-                className="text-purple-400"
-              />
-            </div>
+            <BriefcaseBusiness size={20} className="text-purple-400" />
           </div>
 
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-            {/* Vertical Bottom-Up Chart */}
-            <div className="h-[340px] xl:col-span-2">
+          <div className="grid grid-cols-1 gap-8 xl:grid-cols-3">
+            <div className="h-64 xl:col-span-2">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={projectDistributionData}
-                  margin={{
-                    top: 20,
-                    right: 10,
-                    left: -10,
-                    bottom: 10,
-                  }}
-                >
+                <BarChart data={projectDistributionData}>
                   <defs>
-                    <linearGradient
-                      id="projectBarGradient"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop
-                        offset="0%"
-                        stopColor="#a855f7"
-                      />
-                      <stop
-                        offset="100%"
-                        stopColor="#7c3aed"
-                      />
+                    <linearGradient id="projectBarGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#a855f7" />
+                      <stop offset="100%" stopColor="#7c3aed" />
                     </linearGradient>
                   </defs>
-
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    vertical={false}
-                    stroke="rgba(255,255,255,0.05)"
-                  />
-
-                  <XAxis
-                    dataKey="name"
-                    stroke="#94a3b8"
-                    tick={{ fontSize: 12 }}
-                  />
-
-                  <YAxis
-                    stroke="#94a3b8"
-                    tick={{ fontSize: 12 }}
-                  />
-
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                  <XAxis dataKey="name" stroke="#475569" tick={{ fontSize: 11, fontWeight: 600 }} axisLine={false} />
+                  <YAxis stroke="#475569" tick={{ fontSize: 11, fontWeight: 600 }} axisLine={false} />
                   <Tooltip {...tooltipStyles} />
-
-                  <Bar
-                    dataKey="projects"
-                    fill="url(#projectBarGradient)"
-                    radius={[10, 10, 0, 0]}
-                    barSize={42}
-                  />
+                  <Bar dataKey="projects" fill="url(#projectBarGradient)" radius={[6, 6, 0, 0]} barSize={32} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
-            {/* Side Stats */}
             <div className="space-y-4">
-              <MiniStatCard
-                title="Categories"
-                value={projectDistributionData.length}
-                icon={<Layers3 size={18} />}
-                color="text-purple-400"
-              />
-
-              <MiniStatCard
-                title="Total Projects"
-                value={projectDistributionData.reduce(
-                  (acc, item) => acc + item.projects,
-                  0
-                )}
-                icon={<FolderKanban size={18} />}
-                color="text-cyan-400"
-              />
-
-              <div className="rounded-2xl border border-purple-500/10 bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-cyan-500/10 p-5">
-                <p className="text-xs uppercase tracking-widest text-slate-400">
-                  Highest Volume
-                </p>
-
-                <p className="mt-3 text-2xl font-bold text-white">
-                  Web Apps
-                </p>
-
-                <p className="mt-1 text-sm text-slate-400">
-                  Leading department output
-                </p>
+              <MiniStatCard title="Categories" value={projectDistributionData.length} icon={<Layers3 size={18} />} color="text-purple-400" />
+              <MiniStatCard title="Total Projects" value={projectDistributionData.reduce((acc, item) => acc + item.projects, 0)} icon={<FolderKanban size={18} />} color="text-cyan-400" />
+              <div className="rounded-2xl border border-white/5 bg-white/5 p-5">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Peak Performance</p>
+                <p className="mt-2 text-xl font-bold text-white">Web Apps</p>
+                <p className="mt-1 text-[11px] font-medium text-slate-500">Leading output</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* User Role Distribution */}
-        <div className="xl:col-span-5 rounded-3xl border border-white/5 bg-[#0F172A] p-6 shadow-2xl">
+        <div className="xl:col-span-5 wiz-glass rounded-3xl p-6 shadow-2xl">
           <div className="mb-8 flex items-start justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white">
-                User Role Distribution
-              </h3>
-
-              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
-                Workforce segmentation
-              </p>
+              <h3 className="wiz-heading text-xl text-white">Role Segmentation</h3>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-cyan-400">Workforce distribution</p>
             </div>
+            <Users size={20} className="text-cyan-400" />
+          </div>
 
-            <div className="rounded-2xl bg-cyan-500/10 p-3">
-              <Users size={20} className="text-cyan-400" />
+          <div className="relative h-60">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={userRoleData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius="68%" outerRadius="82%" paddingAngle={5} stroke="none">
+                  {userRoleData.map((entry, index) => (
+                    <Cell key={entry.name} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip {...tooltipStyles} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+              <p className="wiz-heading text-3xl text-white">
+                {userRoleData.reduce((acc, role) => acc + role.value, 0)}
+              </p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Total Users</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-6">
-            <div className="relative h-[240px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={userRoleData}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius="64%"
-                    outerRadius="74%"
-                    paddingAngle={3}
-                    stroke="none"
-                  >
-                    {userRoleData.map((entry, index) => (
-                      <Cell
-                        key={entry.name}
-                        fill={
-                          PIE_COLORS[
-                            index % PIE_COLORS.length
-                          ]
-                        }
-                      />
-                    ))}
-                  </Pie>
-
-                  <Tooltip {...tooltipStyles} />
-                </PieChart>
-              </ResponsiveContainer>
-
-              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                <p className="text-3xl font-bold text-white">
-                  {userRoleData.reduce(
-                    (acc, role) => acc + role.value,
-                    0
-                  )}
-                </p>
-
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-                  Total Users
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              {userRoleData.map((role, index) => (
-                <div
-                  key={role.name}
-                  className="rounded-2xl bg-white/5 px-4 py-3"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <span
-                        className="mr-2 h-3 w-3 rounded-full"
-                        style={{
-                          backgroundColor:
-                            PIE_COLORS[
-                              index % PIE_COLORS.length
-                            ],
-                        }}
-                      />
-
-                      <span className="text-sm font-medium text-slate-300">
-                        {role.name}
-                      </span>
-                    </div>
-
-                    <span className="text-sm font-bold text-white">
-                      {role.value}
-                    </span>
-                  </div>
+          <div className="mt-6 grid grid-cols-2 gap-3">
+            {userRoleData.map((role, index) => (
+              <div key={role.name} className="rounded-xl border border-white/5 bg-white/2 px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full" style={{ backgroundColor: PIE_COLORS[index % PIE_COLORS.length] }} />
+                  <span className="text-xs font-semibold text-slate-400">{role.name}</span>
                 </div>
-              ))}
-            </div>
+                <span className="text-xs font-bold text-white">{role.value}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -430,19 +241,21 @@ export default function Dashboard() {
   );
 }
 
-function KPICard({ title, value, icon, color }) {
+function KPICard({ title, value, icon, accent }) {
+  const colors = {
+    cyan: "text-cyan-400 bg-cyan-500/10 ring-cyan-500/20",
+    purple: "text-purple-400 bg-purple-500/10 ring-purple-500/20",
+    emerald: "text-emerald-400 bg-emerald-500/10 ring-emerald-500/20",
+  };
+
   return (
-    <div className="rounded-3xl border border-white/5 bg-white/5 p-6 sm:p-8 transition-all hover:border-white/10">
-      <div className={`mb-4 ${color}`}>
+    <div className="wiz-glass group relative overflow-hidden rounded-3xl p-8 transition-all hover:-translate-y-1">
+      <div className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl ring-1 ${colors[accent]}`}>
         {icon}
       </div>
-
-      <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-        {title}
-      </p>
-
-      <p className="mt-2 text-2xl font-bold text-white sm:text-3xl">
-        {value}
+      <p className="text-xs font-bold uppercase tracking-widest text-slate-500">{title}</p>
+      <p className="wiz-card-title mt-1 text-3xl text-white tracking-tight">
+        {typeof value === 'number' ? value.toLocaleString() : value}
       </p>
     </div>
   );
@@ -450,40 +263,24 @@ function KPICard({ title, value, icon, color }) {
 
 function SummaryItem({ icon, label, value, color }) {
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-white/5 p-4">
+    <div className="flex items-center justify-between rounded-2xl border border-white/5 bg-white/5 px-5 py-4 transition-colors hover:bg-white/[0.07]">
       <div className="flex items-center gap-3">
-        <div className={color}>
-          {icon}
-        </div>
-
-        <span className="text-sm text-slate-300">
-          {label}
-        </span>
+        <div className={color}>{icon}</div>
+        <span className="text-xs font-semibold text-slate-400">{label}</span>
       </div>
-
-      <span className="text-sm font-bold text-white">
-        {value}
-      </span>
+      <span className="text-sm font-bold text-white">{value}</span>
     </div>
   );
 }
 
 function MiniStatCard({ title, value, icon, color }) {
   return (
-    <div className="rounded-2xl bg-white/5 p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <span className={color}>
-          {icon}
-        </span>
-
-        <span className="text-lg font-bold text-white">
-          {value}
-        </span>
+    <div className="rounded-2xl border border-white/5 bg-white/5 p-4 flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <div className={`p-2 rounded-lg bg-white/5 ${color}`}>{icon}</div>
+        <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">{title}</p>
       </div>
-
-      <p className="text-xs uppercase tracking-widest text-slate-500">
-        {title}
-      </p>
+      <span className="text-lg font-bold text-white">{value}</span>
     </div>
   );
 }

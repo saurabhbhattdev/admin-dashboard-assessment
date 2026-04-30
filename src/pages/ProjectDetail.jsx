@@ -6,6 +6,7 @@ import {
   PlayCircle,
   User,
   Calendar,
+  Layers
 } from "lucide-react";
 
 import { projectsData } from "../data/mockData";
@@ -19,91 +20,95 @@ export default function ProjectDetail() {
 
   if (!project) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center rounded-[3rem] border border-white/5 bg-[#0F172A] text-slate-400">
-        Project not found.
+      <div className="wiz-glass flex min-h-[50vh] flex-col items-center justify-center rounded-3xl text-slate-400">
+        <Layers size={48} className="mb-4 opacity-20" />
+        <p className="wiz-heading text-xl">Project not found</p>
+        <Link to="/projects" className="mt-4 text-cyan-400 hover:underline">Return to Portfolio</Link>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8">
+    <div className="mx-auto max-w-6xl space-y-6 lg:space-y-8">
       {/* Back Button */}
       <Link
         to="/projects"
-        className="inline-flex items-center text-sm font-bold text-slate-400 transition-colors hover:text-cyan-400"
+        className="group inline-flex items-center text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors hover:text-cyan-400"
       >
-        <ArrowLeft size={16} className="mr-2" />
-        Back to Projects
+        <ArrowLeft size={14} className="mr-2 transition-transform group-hover:-translate-x-1" />
+        Back to Portfolio
       </Link>
 
       {/* Main Card */}
-      <div className="rounded-[3rem] border border-white/5 bg-[#0F172A] p-8 shadow-2xl md:p-12">
-        {/* Top Section */}
-        <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-          <div>
-            <h1 className="mb-3 text-4xl font-black text-white">
-              {project.projectName}
-            </h1>
+      <div className="wiz-glass overflow-hidden rounded-[2.5rem] shadow-2xl sm:rounded-[3rem]">
+        
+        {/* Top Header Section */}
+        <div className="border-b border-white/5 bg-white/2 p-8 md:p-12">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div className="mb-3 flex items-center gap-2">
+                <span className="rounded-lg bg-cyan-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-tighter text-cyan-400 ring-1 ring-cyan-500/20">
+                  Project #{project.id}
+                </span>
+              </div>
+              <h1 className="wiz-heading text-3xl text-white sm:text-4xl md:text-5xl">
+                {project.projectName}
+              </h1>
+              <p className="mt-3 text-sm font-medium text-slate-500">
+                Enterprise Project Lifecycle & Strategic Overview
+              </p>
+            </div>
 
-            <p className="text-slate-400">
-              Full enterprise project lifecycle overview
-            </p>
+            <StatusBadge status={project.status} />
           </div>
-
-          <StatusBadge status={project.status} />
         </div>
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          {/* Left Side */}
-          <div className="space-y-8">
-            {/* Overview */}
+        {/* Content Grid */}
+        <div className="grid grid-cols-1 gap-0 lg:grid-cols-2">
+          
+          {/* Left Side: Info & Details */}
+          <div className="space-y-10 p-8 md:p-12">
+            
+            {/* Description */}
             <div>
-              <h3 className="mb-4 border-b border-white/5 pb-3 text-xl font-bold text-white">
+              <h3 className="wiz-heading mb-4 flex items-center gap-2 text-lg text-white">
+                <div className="h-1.5 w-1.5 rounded-full bg-cyan-500" />
                 Project Overview
               </h3>
-
-              <p className="leading-relaxed text-slate-300">
+              <p className="text-sm leading-relaxed text-slate-400">
                 {project.description}
               </p>
             </div>
 
-            {/* Owner */}
-            <div className="space-y-4">
-              <div className="flex items-center text-slate-300">
-                <User size={18} className="mr-3 text-cyan-400" />
-
-                <span>
-                  Owner:{" "}
-                  <span className="font-bold text-white">
-                    {project.owner}
-                  </span>
-                </span>
+            {/* Ownership Meta */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/5 bg-white/2 p-4">
+                <div className="mb-2 flex items-center gap-2 text-slate-500">
+                  <User size={14} />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Project Owner</span>
+                </div>
+                <p className="text-sm font-bold text-slate-200">{project.owner}</p>
               </div>
 
-              <div className="flex items-center text-slate-300">
-                <Calendar size={18} className="mr-3 text-cyan-400" />
-
-                <span>
-                  Start Date:{" "}
-                  <span className="font-bold text-white">
-                    {project.startDate}
-                  </span>
-                </span>
+              <div className="rounded-2xl border border-white/5 bg-white/2 p-4">
+                <div className="mb-2 flex items-center gap-2 text-slate-500">
+                  <Calendar size={14} />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Commencement</span>
+                </div>
+                <p className="text-sm font-bold text-slate-200">{project.startDate}</p>
               </div>
             </div>
 
-            {/* Related Users */}
+            {/* Related Stakeholders */}
             <div>
-              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500">
-                Related Users
+              <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">
+                Assigned Stakeholders
               </p>
-
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2">
                 {project.relatedUsers.map((user) => (
                   <span
                     key={user}
-                    className="rounded-2xl bg-white/5 px-4 py-2 text-sm font-semibold text-white"
+                    className="rounded-xl border border-white/5 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition-colors hover:border-cyan-500/30 hover:text-white"
                   >
                     {user}
                   </span>
@@ -112,13 +117,14 @@ export default function ProjectDetail() {
             </div>
           </div>
 
-          {/* Right Side - Timeline */}
-          <div>
-            <h3 className="mb-8 border-b border-white/5 pb-3 text-xl font-bold text-white">
+          {/* Right Side: Timeline */}
+          <div className="border-l border-white/5 bg-white/1 p-8 md:p-12">
+            <h3 className="wiz-heading mb-8 flex items-center gap-2 text-lg text-white">
+              <div className="h-1.5 w-1.5 rounded-full bg-amber-500" />
               Status Timeline
             </h3>
 
-            <div className="relative space-y-8 before:absolute before:left-[15px] before:top-2 before:h-[calc(100%-20px)] before:w-[2px] before:bg-white/10">
+            <div className="relative space-y-8 before:absolute before:left-4.75 before:top-2 before:h-[calc(100%-24px)] before:w-[1px] before:bg-white/10">
               {project.timeline.map((step, index) => (
                 <TimelineItem
                   key={step}
@@ -137,34 +143,29 @@ export default function ProjectDetail() {
 
 function TimelineItem({ title, isCompleted, isCurrent }) {
   const icon = isCompleted ? (
-    <CheckCircle2 className="text-emerald-400" size={20} />
+    <CheckCircle2 className="text-emerald-400" size={18} />
   ) : isCurrent ? (
-    <Clock className="text-amber-400" size={20} />
+    <Clock className="text-amber-400" size={18} />
   ) : (
-    <PlayCircle className="text-cyan-400" size={20} />
+    <PlayCircle className="text-slate-600" size={18} />
   );
 
   return (
     <div className="relative z-10 flex items-start">
       <div
-        className={`rounded-full bg-[#0F172A] p-1 ${
-          isCurrent ? "ring-4 ring-amber-500/10" : ""
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#080E1A] ${
+          isCurrent ? "ring-4 ring-amber-500/10 border border-amber-500/20" : "border border-white/5"
         }`}
       >
         {icon}
       </div>
 
-      <div className="ml-4">
-        <p
-          className={`font-bold ${
-            isCurrent ? "text-white" : "text-slate-300"
-          }`}
-        >
+      <div className="ml-5">
+        <p className={`text-sm font-bold ${isCurrent ? "text-white" : isCompleted ? "text-slate-300" : "text-slate-500"}`}>
           {title}
         </p>
-
-        <p className="text-sm text-slate-500">
-          {isCurrent ? "Current Stage" : "Completed"}
+        <p className="mt-0.5 text-[11px] font-medium uppercase tracking-wider text-slate-600">
+          {isCurrent ? "Current Stage" : isCompleted ? "Phase Completed" : "Pending Phase"}
         </p>
       </div>
     </div>
@@ -173,18 +174,24 @@ function TimelineItem({ title, isCompleted, isCurrent }) {
 
 function StatusBadge({ status }) {
   const styles = {
-    "In Progress": "bg-cyan-500/10 text-cyan-400",
-    Completed: "bg-emerald-500/10 text-emerald-400",
-    Pending: "bg-amber-500/10 text-amber-400",
-    "On Hold": "bg-rose-500/10 text-rose-400",
+    "In Progress": "bg-cyan-500/10 text-cyan-400 ring-1 ring-cyan-500/20",
+    Completed: "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20",
+    Pending: "bg-amber-500/10 text-amber-400 ring-1 ring-amber-500/20",
+    "On Hold": "bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20",
   };
 
   return (
     <span
-      className={`rounded-2xl px-4 py-2 text-sm font-bold uppercase tracking-wider ${
-        styles[status] || "bg-white/5 text-white"
+      className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest ${
+        styles[status] || "bg-slate-500/10 text-slate-300 ring-1 ring-slate-500/20"
       }`}
     >
+      <span className={`h-1.5 w-1.5 rounded-full animate-pulse ${
+          status === "In Progress" ? "bg-cyan-400" :
+          status === "Completed" ? "bg-emerald-400" :
+          status === "Pending" ? "bg-amber-400" : "bg-rose-400"
+        }`} 
+      />
       {status}
     </span>
   );
