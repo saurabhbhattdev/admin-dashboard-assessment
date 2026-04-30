@@ -40,6 +40,7 @@ Lifecycle Tracker: Card-based overview with ownership and commencement meta-data
 Status Timeline: Vertical project journey tracker showing completion and current stages.
 
 🤖 AI Usage & Collaboration Report
+
 This project was developed using an AI-assisted workflow to optimize development speed and code modularity.
 
 AI Tool Used: Gemini 3 Flash
@@ -58,7 +59,7 @@ Sample Prompts Used:
 Manual Refinement vs. AI Generation:
 AI Helped: Provided the foundational logic for data filtering, initial Recharts configurations, and glassmorphic CSS boilerplate.
 
-Manual Edits: I manually fine-tuned the Visual Hierarchy by adjusting font weights (transitioning from Weight 800 to 700 for cards) to prevent an aggressive UI. I also ensured 100% responsive accuracy and handled the complex refactoring of subheadings during component separation.
+Manual Edits: I manually fine-tuned the Visual Hierarchy by adjusting font weightsto prevent an aggressive UI. I also ensured 100% responsive accuracy and handled the complex refactoring of subheadings during component separation.
 
 🛠️ Setup & Installation
 Clone the repository:
